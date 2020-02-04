@@ -1,0 +1,650 @@
+#include "pch.h"
+#include <iostream>
+#include <string>
+#include <random>
+#include <Windows.h>
+
+using namespace std;
+
+//DEKLARACJE KOSCI
+int kosc[5]{};
+//DEKLARACJE KOSCI
+
+//DEKLARACJE
+bool czy_koniec = false;
+int gracz = 0;
+int wynik = 0;
+
+
+int tab2[15][2]{};
+
+//DEKLARACJE
+
+int losowanie();
+int wpisz(int linia, int gracz, int tab[15][2]);
+void wypisz_bez_losowania(); //kosci losowe
+void wypisz(); //kosci losowe wypisz
+void plansza(int tab[15][2]);
+void print(int tab[15][2]);
+void granie(int tab[15][2], int gracz, int kosc[5]);
+void test();
+void losowanie_bez_wypisywania();
+void suma(int tab[15][2]);
+
+int main()
+{
+	cout << "Kosci by Patryk" << endl;
+	cout << "Zaczyna gracz: " << gracz + 1 << endl;
+	int k = 0;
+	while (k <=26)
+	{
+		k++;
+			cout << "Gra gracz: " << gracz + 1 << endl;
+			suma(tab2);
+			print(tab2); //wypisz plansze
+			cout << endl << endl << "Wylosowane liczby na kosciach:" << endl;
+			wypisz();
+		
+		granie(tab2, gracz, kosc);
+		switch (gracz)
+		{
+		case 0:
+			{
+			gracz = 1; break;
+			}
+		case 1:
+			{
+			gracz = 0; break;
+			}
+		}
+		system("cls");
+		
+	}
+
+	if (tab2[14][0] > tab2[14][1])
+	{
+		cout << "Wygrywa gracz nr 1! Liczba pkt Gracza 1: " << tab2[14][0] << endl;
+		cout << "Liczba punktow Gracza 2: " << tab2[14][1];
+	}
+
+	if (tab2[14][1] > tab2[14][0])
+	{
+		cout << "Wygrywa gracz nr 2! Liczba pkt Gracza 2: " << tab2[14][1] << endl;
+		cout << "Liczba punktow Gracza 1: " << tab2[14][0];
+	}
+
+	//KONIEC
+	cout << endl << endl;
+	system("pause");
+}
+void suma(int tab[15][2])
+{
+	int czy_koniecX=0;
+	bool czy_dodano = false;
+	bool czy_dodano2 = false;
+	tab[6][0] = tab[5][0] + tab[4][0] + tab[3][0] + tab[2][0] + tab[1][0] + tab[0][0];
+	tab[14][0] = tab[13][0] + tab[12][0] + tab[11][0] + tab[10][0] + tab[9][0] + tab[8][0] + tab[7][0] + tab[5][0] + tab[4][0] + tab[3][0] + tab[2][0] + tab[1][0] + tab[0][0];;
+	tab[6][1] = tab[5][1] + tab[4][1] + tab[3][1] + tab[2][1] + tab[1][1] + tab[0][1];
+	tab[14][1] = tab[13][1] + tab[12][1] + tab[11][1] + tab[10][1] + tab[9][1] + tab[8][1] + tab[7][1] + tab[5][1] + tab[4][1] + tab[3][1] + tab[2][1] + tab[1][1] + tab[0][1];
+
+	if (czy_dodano == false)
+	{
+		if (tab[6][0] >= 63)
+		{
+			tab[6][0] = tab[6][0] + 35;
+		}
+		czy_dodano = true;
+	}
+
+	if (czy_dodano2 == false)
+	{
+		if (tab[6][1] >= 63)
+		{
+			tab[6][1] = tab[6][1] + 35;
+		}
+		czy_dodano2 = true;
+	}
+}
+void losowanie_bez_wypisywania()
+{
+	for (int i = 0; i < 5; i++)
+	{
+		kosc[i] = losowanie();
+	}
+}
+void test()
+{
+	cout << "Gra gracz: " << gracz + 1 << endl;
+	print(tab2); //wypisz plansze
+	cout << endl << endl << "Wylosowane liczby na kosciach:" << endl;
+	wypisz_bez_losowania();
+}
+void print(int tab[15][2])
+{
+	//STRING
+	string nazwy[15] = { "Jedynka","Dwojka","Trojka","Czworka","Piatka"
+		,"Szostka","Suma","3x","4x","3 + 2x","Maly strit","Duzy strit","General","Szansa","Suma" };
+	//STRING
+	cout.width(34);
+	cout << "GRACZ 1" << "        " << "GRACZ 2" << endl;
+	for (int i = 0; i < 15; i++)
+	{	
+		cout << endl;
+		for (int j = 0; j < 2; j++)
+		{	
+			if (j == 0)
+			{
+				if (i < 9)
+				{
+					cout << i + 1 << ".";
+					cout.width(14);
+					cout << nazwy[i];
+				}
+				if (i > 8)
+				{
+					cout << i + 1 << ".";
+					cout.width(13);
+					cout << nazwy[i];
+				}
+			}
+			cout.width(15);
+			cout << tab[i][j];
+		}
+	}
+
+}
+void plansza(int tab[15][2])
+{
+
+}
+int losowanie()
+{
+	random_device device;
+	mt19937 generator(device());
+	uniform_int_distribution<int> Lkosci(1, 6);
+	int LK = Lkosci(generator);
+	return LK;
+}
+void wypisz()
+{
+	for (int i = 0; i < 5; i++)
+	{
+		kosc[i] = losowanie();
+		cout << " " << i + 1 << ". " << kosc[i] << endl;
+	}
+}
+void wypisz_bez_losowania()
+{
+	for (int i = 0; i < 5; i++)
+	{
+		cout << " " << i + 1 << ". " << kosc[i] << endl;
+	}
+}
+
+void granie(int tab[15][2], int gracz, int kosc[5])
+{	
+
+	int liczbapow = 2;
+	int numerK;
+	int ilosc;
+	int linia = 0;
+	int wybor;
+	cout << "1. Wpisanie" << endl;
+	cout << "2. Wymiana kosci" << endl;
+powrot:
+	bool blad;
+	cout << "Wybor: ";
+	do
+	{
+		cin >> wybor;
+		blad = cin.fail();
+		cin.clear();
+		cin.ignore(1000, '\n');
+		if (blad == 1)
+			wybor = 0; blad = 0;
+	} while (blad);
+wyborS:
+	switch (wybor)
+	{
+		case 1:
+		{
+			while (bool czy_wartosc = true)
+			{
+				bool bCzyBlad;
+				do
+				{
+					//bCzyBlad = 0;
+					system("cls"); test();
+					cout << "Linia w ktora wpisac: ";
+
+					cin >> linia;
+					bCzyBlad = cin.fail();
+					cin.clear();
+					cin.ignore(1000, '\n');
+					if (linia < 1 || linia == 7 || linia >14)
+						bCzyBlad = 1;
+				} while (bCzyBlad);
+				while (linia == 7 || linia == 15)
+				{
+					if (linia == 7 || linia == 15)
+					{
+						cout << "Nie poprawny wybor!" << endl;
+						cout << "Linia w ktora wpisac: ";
+						cin >> linia;
+					}
+					else
+						break;
+				}
+				if (tab[linia - 1][gracz] == -1 || tab[linia - 1][gracz] > 0)
+				{
+					czy_wartosc = true;
+					continue;
+					
+				}
+				else
+				{
+					tab[linia - 1][gracz] = wpisz(linia, gracz, tab);
+					czy_wartosc = false; break;
+				}
+			}
+		break;
+		}
+		case 2:
+		{
+			bool bCzyBlad;
+			while (liczbapow != 0)
+			{
+				if (liczbapow == 1)
+				{
+					system("cls"); test();
+				}
+				if (liczbapow == 0)
+				{
+					system("cls"); test();
+				}
+				cout << "Ile kosci chcesz wymienic: ";
+				do
+				{
+					cin >> ilosc;
+					bCzyBlad = cin.fail();
+					cin.clear();
+					cin.ignore(1000, '\n');
+				} while (bCzyBlad);
+
+				if (ilosc > 5)
+				{
+					cout << "Nie mozesz wymieniac tyle kosci! "; continue;
+				}
+				if (ilosc == 5)
+				{
+					cout << "Wymieniasz wszystkie kosci: " << endl;
+					wypisz();
+					liczbapow = liczbapow - 1;
+				}
+				if (ilosc < 5 && ilosc > 0)
+				{
+					bool bCzyBlad;
+					cout << "Ktore kosci chcesz wymienic: " << endl;
+					for (int i = 0; i < ilosc; i++)
+					{
+						cout << "Numer kosci: ";
+						do
+						{
+							cin >> numerK;
+							bCzyBlad = cin.fail();
+							cin.clear();
+							cin.ignore(1000, '\n');
+							if (numerK < 1 || numerK >5)
+								bCzyBlad = 1;
+						} while (bCzyBlad);
+						kosc[numerK-1] = losowanie();
+					
+					}
+					wypisz_bez_losowania();
+					liczbapow = liczbapow - 1;
+				}
+				if (ilosc == 0)
+				{
+					wybor = 1; goto wyborS;
+				}
+				if (ilosc<0)
+				{
+					cout << "Nie poprawna liczba. "; continue;
+				}
+			}
+			wybor = 1; goto wyborS;
+		}
+		default:
+		{
+			cout << "Nie poprawny numer wyboru. ";
+			goto powrot;
+		}
+	}
+}
+
+int wpisz(int linia, int gracz, int tab[15][2])
+{
+	int wynik = 0;
+
+	if (linia == 1)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (kosc[i] == 1)
+				wynik++;
+
+		}
+	}
+	if (linia == 2)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (kosc[i] == 2)
+				wynik = wynik + 2;
+
+		}
+	}
+	if (linia == 3)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (kosc[i] == 3)
+				wynik = wynik + 3;
+
+		}
+	}
+	if (linia == 4)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (kosc[i] == 4)
+				wynik = wynik + 4;
+
+		}
+	}
+	if (linia == 5)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (kosc[i] == 5)
+				wynik = wynik + 5;
+
+		}
+	}
+	if (linia == 6)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			if (kosc[i] == 6)
+				wynik = wynik + 6;
+
+		}
+	}
+	if (linia == 7)
+	{
+
+	}
+	if (linia == 8)
+	{
+		int k1 = 0;
+		int k2 = 0;
+		int k3 = 0;
+		int k4 = 0;
+		int k5 = 0;
+		int k6 = 0;
+		for (int i = 0; i < 5; i++)
+		{
+			if (kosc[i] == 1) k1++;
+			if (kosc[i] == 2) k2++;
+			if (kosc[i] == 3) k3++;
+			if (kosc[i] == 4) k4++;
+			if (kosc[i] == 5) k5++;
+			if (kosc[i] == 6) k6++;
+		}
+		if (k1 == 3) { wynik = 3; }
+		if (k2 == 3) { wynik = 6; }
+		if (k3 == 3) { wynik = 9; }
+		if (k4 == 3) { wynik = 12; }
+		if (k5 == 3) { wynik = 15; }
+		if (k6 == 3) { wynik = 18; }
+
+	}
+	if (linia == 9)
+	{
+		int k1 = 0;
+		int k2 = 0;
+		int k3 = 0;
+		int k4 = 0;
+		int k5 = 0;
+		int k6 = 0;
+		for (int i = 0; i < 5; i++)
+		{
+			if (kosc[i] == 1) k1++;
+			if (kosc[i] == 2) k2++;
+			if (kosc[i] == 3) k3++;
+			if (kosc[i] == 4) k4++;
+			if (kosc[i] == 5) k5++;
+			if (kosc[i] == 6) k6++;
+		}
+		if (k1 == 4) { wynik = 4; }
+		if (k2 == 4) { wynik = 8; }
+		if (k3 == 4) { wynik = 12; }
+		if (k4 == 4) { wynik = 16; }
+		if (k5 == 4) { wynik = 20; }
+		if (k6 == 4) { wynik = 24; }
+
+	}
+	if (linia == 10)
+	{
+		int l1 = 0;
+		int l2 = 0;
+		int l3 = 0;
+		int l4 = 0;
+		int l5 = 0;
+		int l6 = 0;
+		int k1 = 0;
+		int k2 = 0;
+		int k3 = 0;
+		int k4 = 0;
+		int k5 = 0;
+		int k6 = 0;
+		for (int i = 0; i < 5; i++)
+		{
+			if (kosc[i] == 1) k1++;
+			if (kosc[i] == 2) k2++;
+			if (kosc[i] == 3) k3++;
+			if (kosc[i] == 4) k4++;
+			if (kosc[i] == 5) k5++;
+			if (kosc[i] == 6) k6++;
+		}
+		for (int i = 0; i < 5; i++)
+		{
+			if (kosc[i] == 1) l1++;
+			if (kosc[i] == 2) l2++;
+			if (kosc[i] == 3) l3++;
+			if (kosc[i] == 4) l4++;
+			if (kosc[i] == 5) l5++;
+			if (kosc[i] == 6) l6++;
+		}
+		if (k1 == 3)
+		{
+			if (l1 == 2)
+				wynik = 25;
+			if (l2 == 2)
+				wynik = 25;
+			if (l3 == 2)
+				wynik = 25;
+			if (l4 == 2)
+				wynik = 25;
+			if (l5 == 2)
+				wynik = 25;
+			if (l6 == 2)
+				wynik = 25;
+		}
+		if (k2 == 3)
+		{
+			if (l1 == 2)
+				wynik = 25;
+			if (l2 == 2)
+				wynik = 25;
+			if (l3 == 2)
+				wynik = 25;
+			if (l4 == 2)
+				wynik = 25;
+			if (l5 == 2)
+				wynik = 25;
+			if (l6 == 2)
+				wynik = 25;
+		}
+		if (k3 == 3)
+		{
+			if (l1 == 2)
+				wynik = 25;
+			if (l2 == 2)
+				wynik = 25;
+			if (l3 == 2)
+				wynik = 25;
+			if (l4 == 2)
+				wynik = 25;
+			if (l5 == 2)
+				wynik = 25;
+			if (l6 == 2)
+				wynik = 25;
+		}
+		if (k4 == 3)
+		{
+			if (l1 == 2)
+				wynik = 25;
+			if (l2 == 2)
+				wynik = 25;
+			if (l3 == 2)
+				wynik = 25;
+			if (l4 == 2)
+				wynik = 25;
+			if (l5 == 2)
+				wynik = 25;
+			if (l6 == 2)
+				wynik = 25;
+		}
+		if (k5 == 3)
+		{
+			if (l1 == 2)
+				wynik = 25;
+			if (l2 == 2)
+				wynik = 25;
+			if (l3 == 2)
+				wynik = 25;
+			if (l4 == 2)
+				wynik = 25;
+			if (l5 == 2)
+				wynik = 25;
+			if (l6 == 2)
+				wynik = 25;
+		}
+		if (k6 == 3)
+		{
+			if (l1 == 2)
+				wynik = 25;
+			if (l2 == 2)
+				wynik = 25;
+			if (l3 == 2)
+				wynik = 25;
+			if (l4 == 2)
+				wynik = 25;
+			if (l5 == 2)
+				wynik = 25;
+			if (l6 == 2)
+				wynik = 25;
+		}
+
+	}
+	if (linia == 11) // NAPRAWIC
+	{
+		bool k1 = false;
+		bool k2 = false;
+		bool k3 = false;
+		bool k4 = false;
+		bool k5 = false;
+		bool k6 = false;
+
+		for (int i = 0; i < 5; i++)
+		{
+			if (kosc[i] == 1) k1 = true;
+			if (kosc[i] == 2) k2 = true;
+			if (kosc[i] == 3) k3 = true;
+			if (kosc[i] == 4) k4 = true;
+			if (kosc[i] == 5) k5 = true;
+			if (kosc[i] == 6) k6 = true;
+		}
+		if (k1 == 1 && k2 == 1 && k3 == 1 && k4 == 1) wynik = 30;
+		if (k2 == 1 && k3 == 1 && k4 == 1 && k5 == 1) wynik = 30;
+		if (k3 == 1 && k4 == 1 && k5 == 1 && k6 == 1) wynik = 30;
+	}
+	if (linia == 12)
+	{
+		int k1 = 0;
+		int k2 = 0;
+		int k3 = 0;
+		int k4 = 0;
+		int k5 = 0;
+		int k6 = 0;
+
+		for (int i = 0; i < 6; i++)
+		{
+			if (kosc[i] == 1) k1++;
+			if (kosc[i] == 2) k2++;
+			if (kosc[i] == 3) k3++;
+			if (kosc[i] == 4) k4++;
+			if (kosc[i] == 5) k5++;
+			if (kosc[i] == 6) k6++;
+		}
+		if (k1 == 1 && k2 == 1 && k3 == 1 && k4 == 1 && k5 == 1) wynik = 40;
+		if (k2 == 1 && k3 == 1 && k4 == 1 && k5 == 1 && k6 == 1) wynik = 40;
+
+	}
+	if (linia == 13)
+	{
+		int k1 = 0;
+		int k2 = 0;
+		int k3 = 0;
+		int k4 = 0;
+		int k5 = 0;
+		int k6 = 0;
+
+		for (int i = 0; i < 6; i++)
+		{
+			if (kosc[i] == 1) k1++;
+			if (kosc[i] == 2) k2++;
+			if (kosc[i] == 3) k3++;
+			if (kosc[i] == 4) k4++;
+			if (kosc[i] == 5) k5++;
+			if (kosc[i] == 6) k6++;
+		}
+
+		if (k1 == 6) wynik = 50;
+		if (k2 == 6) wynik = 50;
+		if (k3 == 6) wynik = 50;
+		if (k4 == 6) wynik = 50;
+		if (k5 == 6) wynik = 50;
+		if (k6 == 6) wynik = 50;
+
+	}
+	if (linia == 14)
+	{
+		int k = 0;
+		for (int i = 0; i < 5; i++)
+		{
+			k = kosc[i];
+			wynik = wynik + k;
+		}
+
+	}
+	if (linia == 15)
+	{
+	}
+	if (wynik == 0)
+	{
+		wynik = -1;
+	}
+	return wynik;
+}
